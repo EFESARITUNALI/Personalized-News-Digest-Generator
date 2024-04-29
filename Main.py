@@ -1,4 +1,3 @@
-import config
 from news import fetch_news, get_article_text
 from summaries import summarize_article
 

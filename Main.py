@@ -11,14 +11,17 @@ def get_user_interests():
 def generate_html_content(articles, counter):
     html_content = open("html_skeleton.txt", 'r').read()
     for idx, article in enumerate(articles, 5*counter+1):
-        article_text = get_article_text(article['url'])
-        summary = summarize_article(article['title']+article['content']+article_text)
-        html_content += f"""<div class="article">
-                                <h2>{idx}. {article['title']}</h2>
-                                <img src='{article['urlToImage']}' alt='Image not available' style='max-width: 100%;'>
-                                <p>{summary}</p>
-                                <a href='{article['url']}'>Read original</a>
-                            </div>"""
+        try:
+            article_text = get_article_text(article['url'])
+            summary = summarize_article(article['title']+article['content']+article_text)
+            html_content += f"""<div class="article">
+                                    <h2>{idx}. {article['title']}</h2>
+                                    <img src='{article['urlToImage']}' alt='Image not available' style='max-width: 100%;'>
+                                    <p>{summary}</p>
+                                    <a href='{article['url']}'>Read original</a>
+                                </div>"""
+        except Exception as e:
+            print(f"Error processing article: {e}")
     return html_content
 
 def main():
@@ -31,13 +34,16 @@ def main():
     while True:
         html_content = generate_html_content(articles[counter * 5 : (counter + 1) * 5], counter)
         filename = f"news_digest_{counter + 1}.html"
-        with open(filename, "w", encoding="utf-8") as file:
-            file.write(html_content)
-        print(f"News digest generated successfully. You can view it in {filename}")
-        choice = input(f"Would you like to see page {counter + 2}? (y/n): ").strip().lower()
-        if choice != 'y':
-            break
-        counter += 1
+        try:
+            with open(filename, "w", encoding="utf-8") as file:
+                file.write(html_content)
+            print(f"News digest generated successfully. You can view it in {filename}")
+            choice = input(f"Would you like to see page {counter + 2}? (y/n): ").strip().lower()
+            if choice != 'y':
+                break
+            counter += 1
+        except Exception as e:
+            print(f"Error generating news digest: {e}")
 
 if __name__ == "__main__":
     main()

@@ -30,20 +30,23 @@ def main():
     if not articles:
         print("No news articles found based on your interests.")
         return
+    
     counter = 0
-    while True:
+    while counter < len(articles) // 5:
         html_content = generate_html_content(articles[counter * 5 : (counter + 1) * 5], counter)
         filename = f"news_digest_{counter + 1}.html"
         try:
             with open(filename, "w", encoding="utf-8") as file:
                 file.write(html_content)
             print(f"News digest generated successfully. You can view it in {filename}")
+            
             choice = input(f"Would you like to see page {counter + 2}? (y/n): ").strip().lower()
             if choice != 'y':
                 break
             counter += 1
         except Exception as e:
             print(f"Error generating news digest: {e}")
+    print("End of your digest, see you next time!")
 
 if __name__ == "__main__":
     main()

@@ -18,6 +18,7 @@ This repository hosts a personalized news digest generator application project w
    pip install langchain
    pip install configparser
    pip install newspaper3k
+   pip install lxml_html_clean
    ```
 
 3. Fill in your News API and Cohere API keys in the `config.ini` file.
